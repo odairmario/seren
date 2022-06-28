@@ -4,6 +4,8 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+seren = {editable = true, path = "."}
+pytest-cov = "*"
 
 [dev-packages]
 
