@@ -10,7 +10,6 @@ import ctypes.util
 import logging as log
 import os
 from enum import Enum
-from multiprocessing import Queue
 
 from seren.settings import AUTHOR, COPYRIGHT, LICENSE
 
@@ -237,67 +236,3 @@ class OverlayFs(Mount):
             MountFlags.MS_ACTIVE,
             **data
         )
-
-
-class BindNameSpace(object):
-
-    """Mount sysfs,proc,dev,devpts on targert directory"""
-
-    __DEVICES = [
-        ("tmp", FilesSystemType.TMPFS, MountFlags.MS_PRIVATE),
-        ("/dev/pts", FilesSystemType.DEVPTS, MountFlags.MS_BIND_PRIVATE),
-        ("/dev", FilesSystemType.DEV, MountFlags.MS_BIND),
-        ("/proc", FilesSystemType.PROC, MountFlags.MS_BIND),
-        ("/sys", FilesSystemType.SYSFS, MountFlags.MS_BIND),
-    ]
-
-    def __init__(self, target: str):
-        """TODO: to be defined.
-
-        :param target: TODO
-
-        """
-        self._target = target
-        self._queue = Queue()
-
-        self._mounts = {}
-
-        for base, fs, flag in self.__DEVICES:
-            # join base with mountpoint
-            target_joined = os.path.normpath("{}/{}".format(target, base))
-            # check if mountpoint exists, else create
-            os.makedirs(target_joined, exist_ok=True)
-
-            self._mounts[target_joined] = Mount(
-                base,
-                target_joined,
-                fs,
-                flag,
-            )
-            self._queue.put(target_joined)
-
-    def __enter__(self):
-        """Return self
-        :returns: TODO
-
-        """
-
-        return self
-
-    def __exit__(self, type, value, traceback):
-        """Exit
-        :returns: TODO
-
-        """
-
-        while self._queue.empty() is False:
-            key = self._queue.get()
-            del self._mounts[key]
-
-    def get_mounts(self):
-        """TODO: Docstring for get_mounts.
-        :returns: TODO
-
-        """
-
-        return self._mounts.keys()
