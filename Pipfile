@@ -8,6 +8,7 @@ seren = {editable = true, path = "."}
 pytest-cov = "*"
 
 [dev-packages]
+commitizen = "*"
 
 [requires]
 python_version = "3.10"

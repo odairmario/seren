@@ -3,7 +3,6 @@ from multiprocessing import Queue
 
 import pytest
 
-from seren.mount import BindNameSpace
 from seren.mount import FilesSystemType as FS
 from seren.mount import Mount
 from seren.mount import MountFlags as MFLAGS
@@ -124,27 +123,6 @@ def test_overlay(tmp_path_factory):
 
     # time.sleep(60)
     assert os.path.ismount(overlay.get_target())
-
-
-def test_bind(tmp_path):
-    """Test bind directories
-
-    :param tmp_path: TODO
-    :returns: TODO
-
-    """
-    target = str(tmp_path.absolute())
-    mounts = []
-    with BindNameSpace(target) as b:
-        # check is still mounted
-
-        for i in b.get_mounts():
-            print("Mount point {}!".format(i))
-            mounts.append(i)
-            # assert os.path.ismount(i) is True
-            print("------------------------------------------------")
-
-    # check if all filesystem are ummounted
 
 
 def test_mount_proc(tmp_path):
