@@ -29,7 +29,15 @@ jobs:
     outputs:
       wheel-distribution: ${{ steps.wheel-distribution.outputs.path }}
     steps:
+      - name: change to root
+        run: sudo su
       - name: debug virtual
+        run: cat /etc/hostname ; mount
+      - name: mkdir
+        run: mkdir -p upper lower merged workdir
+      - name: overlay
+        run: mount -t overlay overlay -o lowerdir=lower,upperdir=upper,workdir=workdir merged
+      - name: mount
         run: cat /etc/hostname ; mount
       - uses: actions/checkout@v3
         with: {fetch-depth: 0}  # deep clone for setuptools-scm
