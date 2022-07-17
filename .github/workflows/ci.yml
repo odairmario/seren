@@ -29,6 +29,8 @@ jobs:
     outputs:
       wheel-distribution: ${{ steps.wheel-distribution.outputs.path }}
     steps:
+      - name: debug virtual
+        run: cat /etc/hostname ; mount
       - uses: actions/checkout@v3
         with: {fetch-depth: 0}  # deep clone for setuptools-scm
       - uses: actions/setup-python@v4
@@ -48,8 +50,6 @@ jobs:
           name: python-distribution-files
           path: dist/
           retention-days: 1
-      - name: debug virtual
-        run: ids ; cat /etc/hostname ; mount
 
   test:
     needs: prepare
