@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 seren = {editable = true, path = "."}
 pytest-cov = "*"
+pre-commit = "*"
 
 [dev-packages]
 commitizen = "*"
