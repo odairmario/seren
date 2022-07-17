@@ -65,7 +65,7 @@ def test_SystemdNspawn_target_existence():
 
     """
     with pytest.raises(ValueError):
-        sn = SystemdNspawn("")
+        SystemdNspawn("")
 
 
 def test_SystemdNspawn_alternative_systemd_nspawn(target):
@@ -76,7 +76,7 @@ def test_SystemdNspawn_alternative_systemd_nspawn(target):
 
     """
     with pytest.raises(Exception):
-        sn = SystemdNspawn(target, nspawn_path=target + "/nspawn")
+        SystemdNspawn(target, nspawn_path=target + "/nspawn")
 
     # test default value
     with SystemdNspawn(target) as sn:
@@ -107,7 +107,7 @@ def test_SystemdNspawn_nspawn_arguments(target):
         assert valid_arguments == sn.nspawn_arguments
 
     with pytest.raises(ValueError):
-        sn = SystemdNspawn(target, nspawn_arguments=invalid_arguments)
+        SystemdNspawn(target, nspawn_arguments=invalid_arguments)
 
 
 @pytest.mark.parametrize(
