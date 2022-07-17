@@ -1,6 +1,6 @@
 #!/usr/bin/bash -x
 
-base_path="../${PWD}/fixtures_data"
+base_path="../fixtures_data"
 function create_debian() {
     export DEBIAN_PATH=$1/"debian"
     mkdir -p $DEBIAN_PATH

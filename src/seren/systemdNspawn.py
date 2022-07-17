@@ -6,9 +6,9 @@ Github: https://github.com/odairmario/seren
 Description: Systemd-nspawn module
 """
 
+import shutil
 import subprocess as sp
 from os import path
-import shutil
 
 __author__ = "Odair M."
 __copyright__ = "Odair M."
@@ -26,8 +26,10 @@ class SystemdNspawn(object):
 
         """
         self.target = target_value
-        self.systemd_nspawn = kwargs.get("nspawn_path","systemd-nspawn")
-        self.nspawn_arguments = kwargs.get("nspawn_arguments",["-q -D {}".format(self.target)])
+        self.systemd_nspawn = kwargs.get("nspawn_path", "systemd-nspawn")
+        self.nspawn_arguments = kwargs.get(
+            "nspawn_arguments", ["-q -D {}".format(self.target)]
+        )
 
         # Stdout and Stderr
         self._stderr = None
@@ -43,7 +45,7 @@ class SystemdNspawn(object):
         return self._nspawn_arguments
 
     @nspawn_arguments.setter
-    def nspawn_arguments(self, arguments:list):
+    def nspawn_arguments(self, arguments: list):
         """Setter for nspawn_arguments, must be a list
 
         :arguments: TODO
@@ -64,6 +66,7 @@ class SystemdNspawn(object):
         """
 
         return self._target
+
     @target.setter
     def target(self, target_value):
         """Setter for target atribute
@@ -76,7 +79,9 @@ class SystemdNspawn(object):
         if path.isdir(target_value):
             self._target = target_value
         else:
-            raise ValueError("Target path %s dosen't exist or not is a directory.",target_value)
+            raise ValueError(
+                "Target path %s dosen't exist or not is a directory.", target_value
+            )
 
     @property
     def systemd_nspawn(self):
@@ -86,6 +91,7 @@ class SystemdNspawn(object):
         """
 
         return self._systemd_nspawn
+
     @systemd_nspawn.setter
     def systemd_nspawn(self, nspawn):
         """TODO: Docstring for systemd_nspawn.
@@ -100,8 +106,6 @@ class SystemdNspawn(object):
         else:
             raise Exception("systemd-nspawn not found")
 
-
-
     def get_last_output(self):
         """Return last output string
         :returns: TODO
@@ -109,6 +113,7 @@ class SystemdNspawn(object):
         """
 
         return self._stdout
+
     def __enter__(self):
         """__enter__ method for WITH stament
 
@@ -135,17 +140,13 @@ class SystemdNspawn(object):
         :returns: TODO
 
         """
-        command = " ".join([self.systemd_nspawn,*self.nspawn_arguments,*commands])
-
+        command = " ".join([self.systemd_nspawn, *self.nspawn_arguments, *commands])
 
         print(command)
         try:
-            err = sp.run(command,
-                        shell=True,
-                        capture_output=True,
-                        check=True,
-                        text=True
-                    )
+            err = sp.run(
+                command, shell=True, capture_output=True, check=True, text=True
+            )
             self._stdout = err.stdout
             self._stderr = err.stderr
 
